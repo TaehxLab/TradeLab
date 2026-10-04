@@ -1,0 +1,1 @@
+function validate(direction,entry,sl,tp){entry=+entry;sl=+sl;tp=+tp;if(![entry,sl,tp].every(Number.isFinite))return false;return direction==='BUY'?sl<entry&&entry<tp:direction==='SELL'?tp<entry&&entry<sl:false}module.exports={validate};

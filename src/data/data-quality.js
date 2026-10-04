@@ -1,0 +1,1 @@
+function assess(x){if(!x||!Array.isArray(x.points)||!x.points.length)return{status:'UNAVAILABLE',execution:false};if(x.fresh!==true)return{status:x.health?.phase||'STALE',execution:false};if(!Number.isFinite(Number(x.spot)))return{status:'INVALID_SPOT',execution:false};return{status:'REAL',execution:true}}module.exports={assess};

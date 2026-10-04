@@ -1,0 +1,1 @@
+class Scheduler{constructor(run){this.runTask=run;this.running=false;this.pending=null}async run(reason='cycle'){if(this.running){this.pending=reason;return false}this.running=true;try{await this.runTask(reason);return true}finally{this.running=false;const p=this.pending;this.pending=null;if(p)queueMicrotask(()=>this.run(p))}}}module.exports={Scheduler};

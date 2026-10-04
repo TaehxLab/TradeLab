@@ -1,0 +1,1 @@
+function atr(a,n=14){if(!Array.isArray(a)||a.length<n+1)return null;let s=0;for(let i=a.length-n;i<a.length;i++){const p=a[i-1].c;s+=Math.max(a[i].h-a[i].l,Math.abs(a[i].h-p),Math.abs(a[i].l-p))}return s/n}module.exports={atr};

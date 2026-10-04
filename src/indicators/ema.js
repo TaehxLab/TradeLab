@@ -1,0 +1,1 @@
+function ema(a,n){if(!Array.isArray(a)||a.length<n)return null;const k=2/(n+1);let v=a.slice(0,n).reduce((s,x)=>s+Number(x),0)/n;for(const x of a.slice(n))v=Number(x)*k+v*(1-k);return v}module.exports={ema};
