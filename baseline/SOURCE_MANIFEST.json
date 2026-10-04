@@ -1,0 +1,44 @@
+{
+  "baseline": "v1.9.0-p1",
+  "created_from": [
+    {
+      "file": "index.html",
+      "sha256": "0c9fa2dfca861f8a53549c843e7f2154a736a5d74df8b6c5989a95da2c524f35",
+      "bytes": 107265
+    },
+    {
+      "file": "contracts.js",
+      "sha256": "a7d8d77068ea0a362aa1ef73f9047ad0fdb904b54832d999fc98699ab0e3b39f",
+      "bytes": 3135
+    },
+    {
+      "file": "supabase-sync.js",
+      "sha256": "7dc36c3a88bbf45f3f89e44868f72b12b37ccdedb27a63ef5a20b0a1d69ce602",
+      "bytes": 7309
+    },
+    {
+      "file": "reliability-runtime.js",
+      "sha256": "035c2934409a06b9f539c7003df400fbc935a4ca8492cb6a571d7950b6e59b7a",
+      "bytes": 2117
+    },
+    {
+      "file": "test-harness.js",
+      "sha256": "2668c38def95412bdc72b301cc32f39441bd69382bf03b4b4ed62febb0d887b9",
+      "bytes": 2211
+    },
+    {
+      "file": "config.js",
+      "sha256": "de65e3e5010722661441dbe730332d8ff971392d258958ec451fafabe289a073",
+      "bytes": 270
+    },
+    {
+      "file": "package.json",
+      "sha256": "a5d9be3030b95cbb87e082677ad5f4ddfb1de1095ca33232cf06479d09ad05e9",
+      "bytes": 1515
+    }
+  ],
+  "notes": [
+    "P2-A does not enable standard trade creation until parity is approved.",
+    "Browser source remains frozen outside this package."
+  ]
+}
