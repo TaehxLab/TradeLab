@@ -1,0 +1,23 @@
+{
+  "name": "xauusd-tradelab",
+  "version": "1.9.0-p1",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/unit/*.test.js",
+    "audit": "python tests/audit_p0a.py && python tests/audit_p0b.py && python tests/audit_p0c.py && python tests/audit_p0d.py && python tests/audit_p0e.py",
+    "check": "npm test && npm run audit",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:browser": "python tests/browser/browser_smoke.py",
+    "test:screenshots": "python tests/browser/responsive_screenshots.py",
+    "test:p0b": "npm run test:unit && npm run test:browser && npm run audit",
+    "test:p0c": "npm run test:unit && python tests/browser/browser_smoke.py && python tests/browser/integration_smoke.py && npm run audit",
+    "test:p0d": "npm run test:unit && python tests/browser/browser_smoke.py && python tests/browser/integration_smoke.py && python tests/browser/deterministic_e2e.py && npm run audit",
+    "test:p0e": "npm run test:unit && python tests/browser/browser_smoke.py && python tests/browser/integration_smoke.py && python tests/browser/deterministic_e2e.py && python tests/browser/no_write_e2e.py && python tests/stabilization/performance_budget.py && npm run audit",
+    "test:parity": "node --test tests/parity/*.test.js",
+    "audit:p1": "python tests/audit_p1.py",
+    "test:p1": "npm run test:unit && npm run test:parity && python tests/browser/browser_smoke.py && python tests/browser/deterministic_e2e.py && npm run audit:p1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
