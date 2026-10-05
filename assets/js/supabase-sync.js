@@ -118,6 +118,32 @@
     return data;
   }
 
+  function candleToLocal(row) {
+    return {
+      timeframe: String(row.timeframe || "").toUpperCase(),
+      t: row.open_time,
+      o: Number(row.open_price),
+      h: Number(row.high_price),
+      l: Number(row.low_price),
+      c: Number(row.close_price),
+      provider: row.provider || "XAUS"
+    };
+  }
+
+  async function pullMarketCandles(timeframe, limit = 500) {
+    const tf = String(timeframe || "").toUpperCase();
+    if (!["M5", "H1"].includes(tf)) throw new Error("INVALID_TIMEFRAME");
+    const safeLimit = Math.min(1000, Math.max(1, Number(limit) || 500));
+    const rows = await request("/rest/v1/rpc/get_market_candles", {
+      method: "POST",
+      body: JSON.stringify({ p_timeframe: tf, p_limit: safeLimit })
+    });
+    if (!Array.isArray(rows)) return [];
+    return rows.map(candleToLocal)
+      .filter(x => Number.isFinite(Date.parse(x.t)) && [x.o, x.h, x.l, x.c].every(Number.isFinite))
+      .sort((a, b) => Date.parse(a.t) - Date.parse(b.t));
+  }
+
   async function pullRemote() {
     const columns = [
       "signal_key", "local_trade_id", "profile_code", "profile_version", "logic",
@@ -234,5 +260,5 @@
     }
   }
 
-  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote };
+  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles };
 })(globalThis);
