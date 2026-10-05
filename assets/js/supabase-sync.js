@@ -129,6 +129,16 @@
     const rows=await request("/rest/v1/rpc/get_market_candles",{method:"POST",body:JSON.stringify({p_timeframe:tf,p_limit:Math.min(1000,Math.max(1,Number(limit)||500))})});
     return Array.isArray(rows)?rows.map(candleToLocal).filter(x=>Number.isFinite(Date.parse(x.t))&&[x.o,x.h,x.l,x.c].every(Number.isFinite)).sort((a,b)=>Date.parse(a.t)-Date.parse(b.t)):[];
   }
+  async function submitStdBrowserSnapshot(snapshot) {
+    return await request("/rest/v1/rpc/submit_std_browser_snapshot", {
+      method: "POST",
+      body: JSON.stringify({ p_snapshot: snapshot })
+    });
+  }
+  async function pullStdParitySummary() {
+    const rows = await request("/rest/v1/rpc/get_std_parity_summary", { method:"POST", body:"{}" });
+    return Array.isArray(rows) ? rows[0] || null : null;
+  }
   async function pullForwardStatistics() {
     const rows=await request("/rest/v1/rpc/get_forward_statistics",{method:"POST",body:"{}"});
     return Array.isArray(rows)?rows:[];
@@ -254,5 +264,5 @@
     }
   }
 
-  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades };
+  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades, submitStdBrowserSnapshot, pullStdParitySummary };
 })(globalThis);
