@@ -133,15 +133,26 @@
   async function pullMarketCandles(timeframe, limit = 500) {
     const tf = String(timeframe || "").toUpperCase();
     if (!["M5", "H1"].includes(tf)) throw new Error("INVALID_TIMEFRAME");
-    const safeLimit = Math.min(1000, Math.max(1, Number(limit) || 500));
     const rows = await request("/rest/v1/rpc/get_market_candles", {
       method: "POST",
-      body: JSON.stringify({ p_timeframe: tf, p_limit: safeLimit })
+      body: JSON.stringify({ p_timeframe: tf, p_limit: Math.min(1000, Math.max(1, Number(limit) || 500)) })
     });
-    if (!Array.isArray(rows)) return [];
-    return rows.map(candleToLocal)
-      .filter(x => Number.isFinite(Date.parse(x.t)) && [x.o, x.h, x.l, x.c].every(Number.isFinite))
-      .sort((a, b) => Date.parse(a.t) - Date.parse(b.t));
+    return Array.isArray(rows) ? rows.map(candleToLocal)
+      .filter(x => Number.isFinite(Date.parse(x.t)) && [x.o,x.h,x.l,x.c].every(Number.isFinite))
+      .sort((a,b) => Date.parse(a.t)-Date.parse(b.t)) : [];
+  }
+
+  async function pullForwardStatistics() {
+    const rows = await request("/rest/v1/rpc/get_forward_statistics", {
+      method: "POST",
+      body: "{}"
+    });
+    return Array.isArray(rows) ? rows : [];
+  }
+
+  async function pullServerForwardTrades(limit = 50) {
+    const safe = Math.min(200, Math.max(1, Number(limit) || 50));
+    return await request(`/rest/v1/server_forward_trades?select=strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution&order=opened_at.desc&limit=${safe}`);
   }
 
   async function pullRemote() {
@@ -260,5 +271,5 @@
     }
   }
 
-  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles };
+  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades };
 })(globalThis);
