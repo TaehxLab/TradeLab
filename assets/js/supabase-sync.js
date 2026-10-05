@@ -119,42 +119,25 @@
   }
 
   function candleToLocal(row) {
-    return {
-      timeframe: String(row.timeframe || "").toUpperCase(),
-      t: row.open_time,
-      o: Number(row.open_price),
-      h: Number(row.high_price),
-      l: Number(row.low_price),
-      c: Number(row.close_price),
-      provider: row.provider || "XAUS"
-    };
+    return { timeframe:String(row.timeframe||"").toUpperCase(), t:row.open_time,
+      o:Number(row.open_price), h:Number(row.high_price), l:Number(row.low_price),
+      c:Number(row.close_price), provider:row.provider||"XAUS" };
   }
-
-  async function pullMarketCandles(timeframe, limit = 500) {
-    const tf = String(timeframe || "").toUpperCase();
-    if (!["M5", "H1"].includes(tf)) throw new Error("INVALID_TIMEFRAME");
-    const rows = await request("/rest/v1/rpc/get_market_candles", {
-      method: "POST",
-      body: JSON.stringify({ p_timeframe: tf, p_limit: Math.min(1000, Math.max(1, Number(limit) || 500)) })
-    });
-    return Array.isArray(rows) ? rows.map(candleToLocal)
-      .filter(x => Number.isFinite(Date.parse(x.t)) && [x.o,x.h,x.l,x.c].every(Number.isFinite))
-      .sort((a,b) => Date.parse(a.t)-Date.parse(b.t)) : [];
+  async function pullMarketCandles(timeframe, limit=500) {
+    const tf=String(timeframe||"").toUpperCase();
+    if(!["M5","H1"].includes(tf)) throw new Error("INVALID_TIMEFRAME");
+    const rows=await request("/rest/v1/rpc/get_market_candles",{method:"POST",body:JSON.stringify({p_timeframe:tf,p_limit:Math.min(1000,Math.max(1,Number(limit)||500))})});
+    return Array.isArray(rows)?rows.map(candleToLocal).filter(x=>Number.isFinite(Date.parse(x.t))&&[x.o,x.h,x.l,x.c].every(Number.isFinite)).sort((a,b)=>Date.parse(a.t)-Date.parse(b.t)):[];
   }
-
   async function pullForwardStatistics() {
-    const rows = await request("/rest/v1/rpc/get_forward_statistics", {
-      method: "POST",
-      body: "{}"
-    });
-    return Array.isArray(rows) ? rows : [];
+    const rows=await request("/rest/v1/rpc/get_forward_statistics",{method:"POST",body:"{}"});
+    return Array.isArray(rows)?rows:[];
   }
-
-  async function pullServerForwardTrades(limit = 50) {
-    const safe = Math.min(200, Math.max(1, Number(limit) || 50));
-    return await request(`/rest/v1/server_forward_trades?select=strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution&order=opened_at.desc&limit=${safe}`);
+  async function pullServerForwardTrades(limit=50) {
+    const safe=Math.min(200,Math.max(1,Number(limit)||50));
+    const rows=await request(`/rest/v1/server_forward_trades?select=strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution&order=opened_at.desc&limit=${safe}`);
+    return Array.isArray(rows)?rows:[];
   }
-
   async function pullRemote() {
     const columns = [
       "signal_key", "local_trade_id", "profile_code", "profile_version", "logic",
