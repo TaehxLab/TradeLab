@@ -148,11 +148,12 @@
     const input=legacy?{limit:options}:(options||{});
     const limit=Math.min(100,Math.max(1,Number(input.limit)||20));
     const offset=Math.max(0,Number(input.offset)||0);
-    const params=new URLSearchParams({select:"strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution,pricing_model,spread_points,planned_tp_points,planned_sl_points,planned_net_tp_points,planned_net_sl_points,planned_net_tp_pips,planned_net_sl_pips,planned_net_rr,std_planned_tp_net_usd,std_planned_sl_net_usd,cent_planned_tp_net_usd,cent_planned_sl_net_usd,gross_result_points,net_result_points,net_result_pips,net_realized_r,std_net_result_usd,cent_net_result_usd,cent_net_result_usc",strategy_group:"eq.PROFILE",order:"opened_at.desc",limit:String(limit),offset:String(offset)});
+    const params=new URLSearchParams({select:"strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution,pricing_model,spread_points,planned_tp_points,planned_sl_points,planned_net_tp_points,planned_net_sl_points,planned_net_tp_pips,planned_net_sl_pips,planned_net_rr,std_planned_tp_net_usd,std_planned_sl_net_usd,cent_planned_tp_net_usd,cent_planned_sl_net_usd,gross_result_points,net_result_points,net_result_pips,net_realized_r,std_net_result_usd,cent_net_result_usd,cent_net_result_usc,metadata",strategy_group:"eq.PROFILE",order:"opened_at.desc",limit:String(limit),offset:String(offset)});
     const clean=v=>String(v||"").trim().replace(/[^A-Z0-9_:-]/gi,"");
-    const strategy=clean(input.strategyCode),direction=clean(input.direction),status=clean(input.status);
+    const strategy=clean(input.strategyCode),direction=clean(input.direction),status=clean(input.status),version=clean(input.strategyVersion);
     if(strategy&&strategy!=="ALL")params.set("strategy_code",`eq.${strategy}`);
     if(direction&&direction!=="ALL")params.set("direction",`eq.${direction}`);
+    if(version&&version!=="ALL")params.set("strategy_version",`eq.${version}`);
     if(status==="CLOSED")params.set("status","neq.OPEN"); else if(status&&status!=="ALL")params.set("status",`eq.${status}`);
     const response=await fetch(`${normalizeProjectUrl(CONFIG.projectUrl)}/rest/v1/server_forward_trades?${params}`,{headers:headers({Prefer:"count=exact"}),cache:"no-store"});
     const text=await response.text();let rows=[];if(text)try{rows=JSON.parse(text)}catch{rows=[]}
@@ -163,12 +164,43 @@
     return legacy?result.rows:result;
   }
 
+  async function callRpc(name, body={}) {
+    const url=`${normalizeProjectUrl(CONFIG.projectUrl)}/rest/v1/rpc/${name}`;
+    const response=await fetch(url,{method:"POST",headers:headers({"Content-Type":"application/json"}),body:JSON.stringify(body),cache:"no-store"});
+    const text=await response.text();let data=[];if(text)try{data=JSON.parse(text)}catch{data=[]}
+    if(!response.ok)throw new Error(data?.message||`${response.status} ${response.statusText}`);
+    return data;
+  }
+
   async function pullProfileAccountModelStatistics300() {
-    const url=`${normalizeProjectUrl(CONFIG.projectUrl)}/rest/v1/rpc/get_profile_account_model_statistics_300`;
-    const response=await fetch(url,{method:"POST",headers:headers({"Content-Type":"application/json"}),body:"{}",cache:"no-store"});
-    const text=await response.text();let rows=[];if(text)try{rows=JSON.parse(text)}catch{rows=[]}
-    if(!response.ok)throw new Error(rows?.message||`${response.status} ${response.statusText}`);
+    const rows=await callRpc("get_profile_account_model_statistics_300");
     return Array.isArray(rows)?rows:[];
+  }
+
+  async function pullV2ExpectancyStatistics(strategyVersion="2.0.0") {
+    const rows=await callRpc("get_profile_v2_expectancy_statistics",{p_strategy_version:strategyVersion});
+    return Array.isArray(rows)?rows:[];
+  }
+
+  async function pullV2PortfolioStatistics(strategyVersion="2.0.0") {
+    const rows=await callRpc("get_profile_v2_portfolio_statistics",{p_strategy_version:strategyVersion});
+    return Array.isArray(rows)?rows:[];
+  }
+
+  async function pullV2RollingStatistics(strategyVersion="2.0.0",windowSize=20) {
+    const pWindow=Math.min(200,Math.max(1,Number(windowSize)||20));
+    const rows=await callRpc("get_profile_v2_rolling_statistics",{p_strategy_version:strategyVersion,p_window:pWindow});
+    return Array.isArray(rows)?rows:[];
+  }
+
+  async function pullV2PerformanceBundle(strategyVersion="2.0.0") {
+    const [strategies,portfolio,rolling10,rolling20]=await Promise.all([
+      pullV2ExpectancyStatistics(strategyVersion),
+      pullV2PortfolioStatistics(strategyVersion),
+      pullV2RollingStatistics(strategyVersion,10),
+      pullV2RollingStatistics(strategyVersion,20)
+    ]);
+    return {strategyVersion,strategies,portfolio:portfolio?.[0]||null,rolling10,rolling20};
   }
   async function pullRemote() {
     const columns = [
@@ -286,5 +318,5 @@
     }
   }
 
-  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades, pullProfileAccountModelStatistics300, submitStdBrowserSnapshot, pullStdParitySummary };
+  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades, pullProfileAccountModelStatistics300, pullV2ExpectancyStatistics, pullV2PortfolioStatistics, pullV2RollingStatistics, pullV2PerformanceBundle, submitStdBrowserSnapshot, pullStdParitySummary };
 })(globalThis);
