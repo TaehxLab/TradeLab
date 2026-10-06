@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="#02070d" name="theme-color"/><title>XAUUSD TradeLab 1.9.1 P2-E1 STD Parity Monitor</title><link href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y2ZDU3YSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzU0YjZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI1IiBmaWxsPSIjMDgxNTIyIi8+PHBhdGggZD0iTTE3IDY1TDM3IDQ0bDEzIDEzIDI5LTMyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzkiIGN5PSIyNSIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPjwvc3ZnPg==" rel="icon"/><style>
+<html lang="th"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="#02070d" name="theme-color"/><title>XAUUSD TradeLab 1.9.1 P2-E2 Bias & Confidence</title><link href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y2ZDU3YSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzU0YjZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI1IiBmaWxsPSIjMDgxNTIyIi8+PHBhdGggZD0iTTE3IDY1TDM3IDQ0bDEzIDEzIDI5LTMyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzkiIGN5PSIyNSIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPjwvc3ZnPg==" rel="icon"/><style>
 :root{--ink:#eef6ff;--muted:#8499b1;--bg:#02070d;--panel:#081522e8;--panel2:#0d2238;--line:#ffffff14;--gold:#f3cb72;--blue:#55b2ff;--green:#31d39c;--red:#ff5f7b;--purple:#9e8bff;--shadow:0 24px 70px #0008}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 8% -6%,#17436d 0,transparent 28%),radial-gradient(circle at 95% 0,#6e4b1629,transparent 24%),linear-gradient(145deg,#02060b,#06111d 56%,#02060b);color:var(--ink);font:14px/1.5 "Noto Sans Thai","Leelawadee UI",Tahoma,Inter,system-ui,sans-serif}.app{min-height:100vh;display:grid;grid-template-columns:230px 1fr}.sidebar{height:100vh;position:sticky;top:0;padding:20px 14px;border-right:1px solid var(--line);background:#040b13e8;backdrop-filter:blur(18px)}.brand{display:flex;gap:11px;align-items:center;padding:5px 7px 24px}.brand img{width:45px;height:45px}.brand h1{font-size:17px;margin:0}.brand p{color:var(--muted);font-size:10px;margin:2px 0}.nav{display:grid;gap:5px}.nav a{display:flex;gap:10px;color:var(--muted);text-decoration:none;padding:11px 12px;border-radius:12px;font-weight:800}.nav a:hover,.nav a.active{color:#fff;background:linear-gradient(90deg,#183d61,#11243b);box-shadow:inset 3px 0 var(--gold)}.version{position:absolute;bottom:18px;left:18px;color:var(--muted);font-size:10px}.content{min-width:0}.appbar{height:76px;position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:#030a12dc;backdrop-filter:blur(18px)}.symbol{display:flex;align-items:center;gap:12px}.symbol b{font-size:18px}.symbol small{display:block;color:var(--muted)}.app-actions{display:flex;gap:8px;align-items:center}.chip,.btn{border:1px solid var(--line);border-radius:99px;padding:7px 10px;background:#0b1d30;color:#c7d6e5;font-size:11px;font-weight:900}.btn{cursor:pointer;color:var(--gold)}main{padding:18px 22px 80px;max-width:1550px;margin:auto}.panel{background:linear-gradient(145deg,#0d2239e8,#06121fee);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.hero{display:grid;grid-template-columns:4fr 8fr;gap:12px}.price-card,.decision-card{position:relative;overflow:hidden;padding:22px;min-height:225px}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--gold);font-weight:950}.price-card strong{font-size:clamp(56px,6vw,86px);display:block;line-height:1;margin:25px 0 10px}.decision{font-size:clamp(48px,6vw,84px);font-weight:950;display:block;line-height:1;margin:22px 0 10px;color:var(--gold)}.decision.buy{color:var(--blue)}.decision.sell{color:var(--red)}.decision.snapshot{color:#fff}.decision-card>span{font-size:20px;font-weight:800}.hero:after{content:"";position:absolute}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:20px}.chips span{padding:7px 10px;border-radius:99px;background:#ffffff08;border:1px solid var(--line);color:#b9c9d8;font-size:11px}.engine{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:11px;margin:12px 0}.engine>div{padding:8px 11px;background:#061524;border-radius:12px}.engine label{display:block;color:var(--muted);font-size:10px}.engine strong{display:block;margin-top:3px}.snapshot-banner{display:none;padding:10px 13px;border:1px solid #ffffff24;background:#ffffff08;border-radius:12px;margin-bottom:12px}.snapshot-banner.show{display:block}.snapshot-banner b{color:var(--gold)}.section{margin-top:12px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 19px 0}.section-head h2{font-size:16px;margin:0;color:#ffe9a9}.section-head p{color:var(--muted);font-size:11px;margin:0}.sessions{padding-bottom:15px}.session-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;padding:13px}.session-mini{padding:10px;border-radius:13px;background:#061523;border:1px solid var(--line)}.session-mini div{display:flex;justify-content:space-between;gap:6px}.session-mini span{font-size:11px}.session-mini b{font-size:9px;color:#b5c5d3}.session-mini.live{border-color:#31d39c55}.session-mini.live b{color:var(--green)}.session-mini small,.session-mini strong{display:block}.session-mini small{color:var(--muted);font-size:9px;margin-top:4px}.session-mini strong{font-size:10px;margin-top:4px;color:var(--gold)}.workspace{display:grid;grid-template-columns:3fr 2fr;gap:12px}.widget{height:520px;margin:12px;border-radius:13px;overflow:hidden;background:#030a12}.analysis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.analysis{padding:17px;min-height:175px}.analysis h3{margin:0 0 13px;font-size:13px;color:#ffe39a}.analysis>strong{font-size:22px}.analysis p{color:var(--muted)}.meter{height:9px;background:#1b3048;border-radius:99px;overflow:hidden;margin:7px 0}.meter i{display:block;height:100%;width:0}.meter.buy i{background:linear-gradient(90deg,#2778d7,var(--blue))}.meter.sell i{background:linear-gradient(90deg,#b22845,var(--red))}.plan-layout{display:grid;grid-template-columns:7fr 5fr;gap:12px}.plan-card{padding-bottom:18px;overflow:hidden}.plan-top{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}.plan-top h2{margin:0}.plan-direction{font-weight:950;color:var(--gold)}.ladder{position:relative;padding:18px 22px 5px}.ladder:before{content:"";position:absolute;left:55px;top:32px;bottom:35px;width:2px;background:linear-gradient(var(--green),var(--blue),var(--red))}.level{position:relative;display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:10px;padding:8px 0}.dot{width:12px;height:12px;border-radius:50%;background:var(--green);z-index:1;margin-left:27px;box-shadow:0 0 18px currentColor}.level.entry .dot{background:var(--blue)}.level.sl .dot{background:var(--red)}.level b{font-size:20px}.level small{display:block;color:var(--muted)}.r-badge{padding:5px 8px;border-radius:9px;background:#ffffff09;color:var(--gold);font-size:11px}.plan-info{padding:18px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.info{padding:10px;border-radius:12px;background:#061523}.info span{display:block;color:var(--muted);font-size:10px}.info b{display:block;margin-top:4px}.warning{margin-top:12px;padding:10px;border-radius:12px;background:#f3cb7210;border:1px solid #f3cb7230;color:#f9dfa0}.stats{padding-bottom:15px}.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:13px}.stat{padding:12px;border-radius:13px;background:#061523}.stat span{display:block;color:var(--muted);font-size:10px}.stat b{font-size:24px}.empty{margin:0 13px 13px;padding:18px;text-align:center;border:1px dashed #ffffff22;border-radius:13px;color:var(--muted)}.empty.hide{display:none}.history-row{display:grid;grid-template-columns:1fr 80px 80px;gap:10px;padding:8px 14px;border-top:1px solid var(--line)}.health{padding:15px}.health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.health-grid>div{background:#061523;padding:10px;border-radius:12px}.health-grid span{display:block;color:var(--muted);font-size:10px}.loading{display:none}.loading.show{display:block;padding:12px;color:var(--gold)}.bad{color:var(--red)!important;border-color:#ff5f7b66!important}.bottom-nav{display:none}
 @media(max-width:1100px){.app{grid-template-columns:76px 1fr}.brand div,.nav span,.version{display:none}.brand{justify-content:center}.nav a{justify-content:center}.session-grid{grid-template-columns:repeat(3,1fr)}}
@@ -43,7 +43,13 @@
 #profileForwardHistory .profile-history-row:last-child{border-bottom:0}
 .history-main b{display:block;color:#f4f9ff;font-size:11px;margin-bottom:3px}.history-main small{color:#7897b4;font-size:9px}.history-direction{font-size:10px;font-weight:800}.history-direction.buy{color:#5eead4}.history-direction.sell{color:#fb7185}.history-status{text-align:right}.history-status b{display:inline-flex;padding:5px 9px;border-radius:999px;background:rgba(56,189,248,.09);border:1px solid rgba(56,189,248,.17);color:#7dd3fc;font-size:9px}
 @media(max-width:760px){#statistics .stats-grid,#statistics .profile-stats-grid{grid-template-columns:1fr;padding:14px}#statistics .subsection-head{padding:18px 14px 6px}#statistics .profile-stats-note,#profileForwardHistory{margin-left:14px;margin-right:14px}#profileForwardHistory .profile-history-row{grid-template-columns:1fr auto}.history-direction{display:none}}
-</style></head><body><div class="app"><aside class="sidebar"><div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y2ZDU3YSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzU0YjZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI1IiBmaWxsPSIjMDgxNTIyIi8+PHBhdGggZD0iTTE3IDY1TDM3IDQ0bDEzIDEzIDI5LTMyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzkiIGN5PSIyNSIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPjwvc3ZnPg=="/><div><h1>TradeLab</h1><p>Market Intelligence</p></div></div><nav class="nav"><a class="active" href="#overview">⌂ <span>Overview</span></a><a href="#profileResearch">▣ <span>Profiles</span></a><a href="#plan">◇ <span>Trade Plan</span></a><a href="#statistics">▥ <span>Statistics</span></a><a href="#health">◉ <span>Data Health</span></a></nav><div class="version">App 1.9.1 P2-E1 STD Parity Monitor<br/>Strategy 4.2.1<br/>Data Engine 1.5<br/>Clock Engine 1.1<br/>Trade Plan 2.0</div></aside><div class="content"><header class="appbar"><div class="symbol"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y2ZDU3YSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzU0YjZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI1IiBmaWxsPSIjMDgxNTIyIi8+PHBhdGggZD0iTTE3IDY1TDM3IDQ0bDEzIDEzIDI5LTMyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzkiIGN5PSIyNSIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPjwvc3ZnPg==" width="36"/><div><b>XAUUSD</b><small>Gold / US Dollar</small></div></div><div class="app-actions"><span class="chip" id="cycleStatus">BOOTING</span><span class="chip" id="sourceStatus">CACHE</span><button class="btn" id="retryData">รีเฟรชข้อมูล</button></div></header><main>
+
+/* P2-E2 Bias and Confidence */
+.decision.neutral{color:var(--gold)}
+.decision-card[data-bias="BUY"]{border-color:#55b2ff55;box-shadow:0 24px 70px #0008,inset 0 3px #55b2ff}
+.decision-card[data-bias="SELL"]{border-color:#ff5f7b55;box-shadow:0 24px 70px #0008,inset 0 3px #ff5f7b}
+.decision-card[data-bias="NEUTRAL"]{border-color:#f3cb7255;box-shadow:0 24px 70px #0008,inset 0 3px #f3cb72}
+</style></head><body><div class="app"><aside class="sidebar"><div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y2ZDU3YSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzU0YjZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI1IiBmaWxsPSIjMDgxNTIyIi8+PHBhdGggZD0iTTE3IDY1TDM3IDQ0bDEzIDEzIDI5LTMyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzkiIGN5PSIyNSIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPjwvc3ZnPg=="/><div><h1>TradeLab</h1><p>Market Intelligence</p></div></div><nav class="nav"><a class="active" href="#overview">⌂ <span>Overview</span></a><a href="#profileResearch">▣ <span>Profiles</span></a><a href="#plan">◇ <span>Trade Plan</span></a><a href="#statistics">▥ <span>Statistics</span></a><a href="#health">◉ <span>Data Health</span></a></nav><div class="version">App 1.9.1 P2-E2 Bias & Confidence<br/>Strategy 4.2.1<br/>Data Engine 1.5<br/>Clock Engine 1.1<br/>Trade Plan 2.0</div></aside><div class="content"><header class="appbar"><div class="symbol"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5NiA5NiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Y2ZDU3YSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzU0YjZmZiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgcng9IjI1IiBmaWxsPSIjMDgxNTIyIi8+PHBhdGggZD0iTTE3IDY1TDM3IDQ0bDEzIDEzIDI5LTMyIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PGNpcmNsZSBjeD0iNzkiIGN5PSIyNSIgcj0iNiIgZmlsbD0iIzM0ZDM5OSIvPjwvc3ZnPg==" width="36"/><div><b>XAUUSD</b><small>Gold / US Dollar</small></div></div><div class="app-actions"><span class="chip" id="cycleStatus">BOOTING</span><span class="chip" id="sourceStatus">CACHE</span><button class="btn" id="retryData">รีเฟรชข้อมูล</button></div></header><main>
 <section class="hero" id="overview"><article class="panel price-card"><div class="eyebrow">XAU / USD</div><strong id="price">--</strong><span id="dataAsOf">กำลังโหลดแท่งย้อนหลัง</span></article><article class="panel decision-card"><div class="eyebrow">MARKET DECISION</div><strong class="decision" id="decision">WAIT</strong><span id="action">กำลังวิเคราะห์</span><div class="chips"><span id="marketRegime">--</span><span id="readiness">--</span><span id="conflict">--</span></div></article></section>
 <section class="panel engine"><div><label>รีเฟรชอัตโนมัติ</label><strong id="refreshCountdown">กำลังเริ่มระบบ</strong></div><div><label>กำหนดการรีเฟรช</label><strong id="nextRefresh">ทุก 5 นาที</strong><small id="refreshHumanStatus">กำลังตรวจสอบ API</small></div><div><label>โหมดข้อมูล</label><strong id="dataMode">--</strong><small id="recoveryStatus">ระบบปกติ</small></div><div><label>API ที่กำลังใช้งาน</label><strong id="dataHealth">กำลังตรวจสอบ</strong></div></section><section class="panel engine" style="grid-template-columns:2fr 3fr 1fr"><div><label>ชุดข้อมูลที่ใช้</label><select class="btn" id="dataViewMode" style="width:100%;border-radius:10px"><option value="LATEST">ล่าสุดอัตโนมัติ</option><option value="CLOSED">แท่งปิดล่าสุด</option><option value="HISTORY">ประวัติตามวันที่</option></select></div><div hidden="" id="historyControls"><label>วันที่และเวลาสิ้นสุดข้อมูล</label><input class="btn" id="historyCutoff" style="width:100%;border-radius:10px" type="datetime-local"/></div><div><label>กลับสู่ Live</label><button class="btn" id="backLatest" style="width:100%;border-radius:10px">ข้อมูลล่าสุด</button></div></section>
 <div class="snapshot-banner" id="snapshotBanner"><b>HISTORICAL SNAPSHOT</b> • ตลาดปิด • วิเคราะห์จากแท่งล่าสุด • ไม่บันทึก Forward Test</div>
@@ -526,7 +532,7 @@ try {
       if (list.some((x) => x.key === key)) return false;
       const t = result.tradePlan.targets || [];
       if (!Number.isFinite(t[0]?.price)) return false;
-      list.push({ key, time: (/* @__PURE__ */ new Date()).toISOString(), candleTime: candle, appVersion: "1.9.1-P2E1", strategyVersion: "4.2.1", targetEngineVersion: "H1_STRUCTURE_1.1", dataQualityVersion: "1.1", analysisMode: result.analysisMode, source: data.source, signal: result.signal, entry: result.tradePlan.entry.price, entrySource: result.tradePlan.entry.source, sl: result.tradePlan.sl.price, risk: result.tradePlan.sl.distance, rSettings: { ...result.tradePlan.rSettings }, targets: { tp1: t[0]?.price ?? null, tp2: t[1]?.price ?? null, tp3: t[2]?.price ?? null }, tp1: t[0]?.price ?? null, status: "OPEN", result: null, closedAt: null });
+      list.push({ key, time: (/* @__PURE__ */ new Date()).toISOString(), candleTime: candle, appVersion: "1.9.1-P2E2", strategyVersion: "4.2.1", targetEngineVersion: "H1_STRUCTURE_1.1", dataQualityVersion: "1.1", analysisMode: result.analysisMode, source: data.source, signal: result.signal, entry: result.tradePlan.entry.price, entrySource: result.tradePlan.entry.source, sl: result.tradePlan.sl.price, risk: result.tradePlan.sl.distance, rSettings: { ...result.tradePlan.rSettings }, targets: { tp1: t[0]?.price ?? null, tp2: t[1]?.price ?? null, tp3: t[2]?.price ?? null }, tp1: t[0]?.price ?? null, status: "OPEN", result: null, closedAt: null });
       this.store.set("forward-test-v2", list);
       return true;
     }
@@ -836,4 +842,131 @@ try {
   window.addEventListener('tradelab-storage-reconcile',()=>{renderProfileForwardStats();renderProfileResearch(lastProfileResults)});
   window.TradeLab = { diagnostics:()=>globalThis.TradeLabReliability?.diagnostics.events||[], refresh: () => scheduler.run("\u0E23\u0E35\u0E40\u0E1F\u0E23\u0E0A\u0E14\u0E49\u0E27\u0E22\u0E15\u0E19\u0E40\u0E2D\u0E07"), recalculate: () => lastData && analyze(lastData, { record: false }) };
 })();
-</script></body></html>
+</script>
+<script>
+(function () {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  const numberFrom = (id) => {
+    const value = Number(String($(id)?.textContent || "").replace(/[^0-9.-]/g, ""));
+    return Number.isFinite(value) ? value : null;
+  };
+  const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
+
+  function confidenceLevel(value) {
+    if (value >= 75) return "HIGH";
+    if (value >= 65) return "STRONG";
+    if (value >= 55) return "MODERATE";
+    return "LOW";
+  }
+
+  function readinessPercent() {
+    const checks = [
+      ["qualityH1", /REAL|PASS|READY/i],
+      ["qualityM15", /REAL|PASS|READY/i],
+      ["qualityM5", /REAL|PASS|READY/i],
+      ["diagEntry", /AVAILABLE|PASS/i],
+      ["diagInZone", /^YES$/i],
+      ["diagTrigger", /CONFIRMED/i],
+      ["diagRisk", /^VALID/i],
+      ["diagTarget", /^VALID/i]
+    ];
+    let available = 0;
+    let passed = 0;
+    for (const [id, pattern] of checks) {
+      const text = String($(id)?.textContent || "").trim();
+      if (!text || text === "--") continue;
+      available += 1;
+      if (pattern.test(text)) passed += 1;
+    }
+    return available ? Math.round(passed / available * 100) : null;
+  }
+
+  function calculateBias() {
+    const buyScore = numberFrom("buyScore");
+    const sellScore = numberFrom("sellScore");
+    if (buyScore === null || sellScore === null) return null;
+
+    const total = buyScore + sellScore;
+    if (total <= 0) return null;
+
+    const lead = Math.abs(buyScore - sellScore);
+    const rawConfidence = Math.max(buyScore, sellScore) / total * 100;
+    const readiness = readinessPercent();
+    const readinessFactor = readiness === null ? 1 : 0.70 + readiness / 100 * 0.30;
+    const adjustedConfidence = clamp(rawConfidence * readinessFactor, 50, 99);
+    const bias = lead < 5 ? "NEUTRAL" : buyScore > sellScore ? "BUY" : "SELL";
+
+    return {
+      bias,
+      buyScore,
+      sellScore,
+      lead,
+      rawConfidence: Math.round(rawConfidence),
+      adjustedConfidence: Math.round(adjustedConfidence),
+      readiness,
+      level: confidenceLevel(adjustedConfidence)
+    };
+  }
+
+  function executionText() {
+    const ready = String($("qualityExecution")?.textContent || "").trim().toUpperCase();
+    const blocker = String($("diagPlanBlocker")?.textContent || "").trim();
+    if (ready === "READY") return "EXECUTION READY";
+    return `EXECUTION WAIT${blocker && blocker !== "--" && blocker !== "NONE" ? ` • ${blocker}` : ""}`;
+  }
+
+  function render() {
+    const data = calculateBias();
+    const decision = $("decision");
+    const action = $("action");
+    if (!data || !decision || !action) return;
+
+    decision.textContent = data.bias;
+    decision.className = `decision ${data.bias.toLowerCase()}`;
+    action.textContent = data.bias === "NEUTRAL"
+      ? `${data.adjustedConfidence}% CONFIDENCE SCORE • ${data.level}`
+      : `${data.adjustedConfidence}% CONFIDENCE SCORE • ${data.level} ${data.bias} BIAS`;
+
+    const eyebrow = decision.closest(".decision-card")?.querySelector(".eyebrow");
+    if (eyebrow) eyebrow.textContent = "MARKET BIAS";
+
+    const regime = $("marketRegime");
+    const readiness = $("readiness");
+    const conflict = $("conflict");
+    if (regime) regime.textContent = executionText();
+    if (readiness) readiness.textContent = `CONFIDENCE ${data.adjustedConfidence}% • RAW ${data.rawConfidence}%`;
+    if (conflict) conflict.textContent = `READINESS ${data.readiness ?? "--"}% • LEAD ${data.lead}`;
+
+    const card=decision.closest(".decision-card");
+    card?.setAttribute("data-execution-status", executionText());
+    card?.setAttribute("data-bias", data.bias);
+  }
+
+  let scheduled = false;
+  function scheduleRender() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      render();
+    });
+  }
+
+  const observer = new MutationObserver(scheduleRender);
+  window.addEventListener("DOMContentLoaded", () => {
+    const root = document.getElementById("overview") || document.body;
+    observer.observe(root, { childList: true, subtree: true, characterData: true });
+    for (const id of ["buyScore", "sellScore", "qualityExecution", "diagPlanBlocker", "diagTrigger", "diagRisk", "diagTarget"]) {
+      const node = document.getElementById(id);
+      if (node) observer.observe(node, { childList: true, subtree: true, characterData: true });
+    }
+    scheduleRender();
+  });
+
+  window.TradeLabBiasConfidence = { calculate: calculateBias, render };
+})();
+
+</script>
+</body></html>
