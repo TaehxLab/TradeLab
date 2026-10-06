@@ -143,41 +143,32 @@
     const rows=await request("/rest/v1/rpc/get_forward_statistics",{method:"POST",body:"{}"});
     return Array.isArray(rows)?rows:[];
   }
-  function safeFilterValue(value) {
-    return String(value || "").trim().replace(/[^A-Z0-9_:-]/gi, "");
+  async function pullServerForwardTrades(options=50) {
+    const legacy=typeof options === "number";
+    const input=legacy?{limit:options}:(options||{});
+    const limit=Math.min(100,Math.max(1,Number(input.limit)||20));
+    const offset=Math.max(0,Number(input.offset)||0);
+    const params=new URLSearchParams({select:"strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution,pricing_model,spread_points,planned_tp_points,planned_sl_points,planned_net_tp_points,planned_net_sl_points,planned_net_tp_pips,planned_net_sl_pips,planned_net_rr,std_planned_tp_net_usd,std_planned_sl_net_usd,cent_planned_tp_net_usd,cent_planned_sl_net_usd,gross_result_points,net_result_points,net_result_pips,net_realized_r,std_net_result_usd,cent_net_result_usd,cent_net_result_usc",strategy_group:"eq.PROFILE",order:"opened_at.desc",limit:String(limit),offset:String(offset)});
+    const clean=v=>String(v||"").trim().replace(/[^A-Z0-9_:-]/gi,"");
+    const strategy=clean(input.strategyCode),direction=clean(input.direction),status=clean(input.status);
+    if(strategy&&strategy!=="ALL")params.set("strategy_code",`eq.${strategy}`);
+    if(direction&&direction!=="ALL")params.set("direction",`eq.${direction}`);
+    if(status==="CLOSED")params.set("status","neq.OPEN"); else if(status&&status!=="ALL")params.set("status",`eq.${status}`);
+    const response=await fetch(`${normalizeProjectUrl(CONFIG.projectUrl)}/rest/v1/server_forward_trades?${params}`,{headers:headers({Prefer:"count=exact"}),cache:"no-store"});
+    const text=await response.text();let rows=[];if(text)try{rows=JSON.parse(text)}catch{rows=[]}
+    if(!response.ok)throw new Error(rows?.message||`${response.status} ${response.statusText}`);
+    const rawTotal=(response.headers.get("content-range")||"").split("/")[1];
+    const total=rawTotal&&rawTotal!=="*"?Number(rawTotal):rows.length;
+    const result={rows:Array.isArray(rows)?rows:[],total:Number.isFinite(total)?total:rows.length,limit,offset};
+    return legacy?result.rows:result;
   }
-  async function pullServerForwardTrades(options = 50) {
-    const legacy = typeof options === "number";
-    const input = legacy ? { limit: options } : (options || {});
-    const limit = Math.min(100, Math.max(1, Number(input.limit) || 20));
-    const offset = Math.max(0, Number(input.offset) || 0);
-    const params = new URLSearchParams();
-    params.set("select", "strategy_group,strategy_code,strategy_version,direction,entry_price,stop_loss,take_profit_1,status,result,realized_r,opened_at,closed_at,resolution");
-    params.set("strategy_group", "eq.PROFILE");
-    const strategy = safeFilterValue(input.strategyCode);
-    const direction = safeFilterValue(input.direction);
-    const status = safeFilterValue(input.status);
-    if (strategy && strategy !== "ALL") params.set("strategy_code", `eq.${strategy}`);
-    if (direction && direction !== "ALL") params.set("direction", `eq.${direction}`);
-    if (status === "CLOSED") params.set("status", "neq.OPEN");
-    else if (status && status !== "ALL") params.set("status", `eq.${status}`);
-    if (input.openedFrom && Number.isFinite(Date.parse(input.openedFrom))) params.set("opened_at", `gte.${new Date(input.openedFrom).toISOString()}`);
-    if (input.openedTo && Number.isFinite(Date.parse(input.openedTo))) params.append("opened_at", `lte.${new Date(input.openedTo).toISOString()}`);
-    params.set("order", "opened_at.desc");
-    params.set("limit", String(limit));
-    params.set("offset", String(offset));
 
-    const url = `${normalizeProjectUrl(CONFIG.projectUrl)}/rest/v1/server_forward_trades?${params.toString()}`;
-    const response = await fetch(url, { method: "GET", headers: headers({ Prefer: "count=exact" }), cache: "no-store" });
-    const text = await response.text();
-    let rows = [];
-    if (text) { try { rows = JSON.parse(text); } catch { rows = []; } }
-    if (!response.ok) throw new Error(rows?.message || `${response.status} ${response.statusText}`);
-    const range = response.headers.get("content-range") || "";
-    const totalText = range.split("/")[1];
-    const total = totalText && totalText !== "*" ? Number(totalText) : rows.length;
-    const result = { rows: Array.isArray(rows) ? rows : [], total: Number.isFinite(total) ? total : rows.length, limit, offset };
-    return legacy ? result.rows : result;
+  async function pullProfileAccountModelStatistics300() {
+    const url=`${normalizeProjectUrl(CONFIG.projectUrl)}/rest/v1/rpc/get_profile_account_model_statistics_300`;
+    const response=await fetch(url,{method:"POST",headers:headers({"Content-Type":"application/json"}),body:"{}",cache:"no-store"});
+    const text=await response.text();let rows=[];if(text)try{rows=JSON.parse(text)}catch{rows=[]}
+    if(!response.ok)throw new Error(rows?.message||`${response.status} ${response.statusText}`);
+    return Array.isArray(rows)?rows:[];
   }
   async function pullRemote() {
     const columns = [
@@ -295,5 +286,5 @@
     }
   }
 
-  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades, submitStdBrowserSnapshot, pullStdParitySummary };
+  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades, pullProfileAccountModelStatistics300, submitStdBrowserSnapshot, pullStdParitySummary };
 })(globalThis);
