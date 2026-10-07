@@ -209,6 +209,74 @@
     return await request(`/rest/v1/${viewName}?${params.toString()}`, { method: "GET" });
   }
 
+  async function pullAmdStructureLatest() {
+    const rows = await pullView("v_amd_structure_latest", { limit: 1 });
+    return Array.isArray(rows) ? rows[0] || null : rows || null;
+  }
+  function amdText(id, value, fallback = "--") {
+    const node = document.getElementById(id);
+    if (node) node.textContent = value === null || value === undefined || value === "" ? fallback : String(value);
+  }
+  function amdNumber(value, digits = 2) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number.toFixed(digits) : "--";
+  }
+  function renderAmdStructure(row) {
+    if (!row) {
+      amdText("amdStrategyStatus", "SHADOW MODE / NO AMD SNAPSHOT");
+      amdText("amdExecutionStatus", "EXECUTION DISABLED");
+      amdText("amdSafetyGate", "BLOCKED / SHADOW");
+      return false;
+    }
+    const details = row.amd_details || {};
+    const h1 = details.h1Context || {};
+    const entryPlan = details.entryPlan || {};
+    const distribution = details.distribution || {};
+    const phase = row.amd_phase || "--";
+    const direction = row.direction || "WAIT";
+    const session = row.amd_session_model || "--";
+    const executionEnabled = details.forwardExecutionEnabled === true;
+    amdText("amdStrategyStatus", `${phase} / ${direction}`);
+    amdText("amdExecutionStatus", executionEnabled ? "EXECUTION ENABLED" : "EXECUTION DISABLED");
+    amdText("amdPhase", phase);
+    amdText("amdBlockReason", row.hard_block_reason || "AMD_SHADOW_BLOCKED");
+    amdText("amdSessionDirection", `${session} / ${direction}`);
+    amdText("amdSessionDate", row.amd_session_date || "--");
+    amdText("amdReadiness", `${amdNumber(row.readiness_score)}%`);
+    amdText("amdH1Bias", h1.h1Bias || "--");
+    amdText("amdRegime", row.market_regime || h1.h1Regime || "--");
+    amdText("amdEntryStatus", row.entry_status || entryPlan.entryStatus || "WAITING");
+    amdText("amdAccumulationScore", `${amdNumber(row.accumulation_score)}%`);
+    amdText("amdManipulationScore", `${amdNumber(row.manipulation_score)}%`);
+    amdText("amdDistributionScore", `${amdNumber(row.distribution_score)}%`);
+    amdText("amdH1DirectionScore", `${amdNumber(row.h1_direction_score)}%`);
+    amdText("amdRegimeFitScore", `${amdNumber(row.regime_fit_score)}%`);
+    amdText("amdEntryQualityScore", `${amdNumber(row.entry_quality_score)}%`);
+    amdText("amdVolatilityScore", `${amdNumber(row.volatility_score)}%`);
+    amdText("amdNetRr", amdNumber(row.planned_net_rr));
+    amdText("amdEntryPrice", amdNumber(row.entry_price));
+    amdText("amdStopLoss", amdNumber(row.stop_loss));
+    amdText("amdTakeProfit", amdNumber(row.take_profit));
+    const sweep = row.sweep_side ? `${row.sweep_side} ${amdNumber(row.sweep_price)}` : "NO SWEEP";
+    const reclaim = row.reclaim_confirmed ? `RECLAIM ${amdNumber(row.reclaim_price)}` : "WAITING";
+    amdText("amdSweepReclaim", `${sweep} / ${reclaim}`);
+    amdText("amdSafetyGate", row.hard_gate_passed === true ? "PASSED" : "BLOCKED / SHADOW");
+    const monitor = document.getElementById("amdStructureMonitor");
+    if (monitor) monitor.dataset.amdPhase = phase;
+    return true;
+  }
+  async function refreshAmdStructureMonitor() {
+    try {
+      const row = await pullAmdStructureLatest();
+      renderAmdStructure(row);
+      return { ok: true, row };
+    } catch (error) {
+      report("AMD_MONITOR_ERROR", { message: String(error?.message || error) });
+      amdText("amdStrategyStatus", "SHADOW MODE / DATA ERROR");
+      amdText("amdBlockReason", String(error?.message || error));
+      return { ok: false, reason: String(error?.message || error) };
+    }
+  }
   async function pullAdaptiveReadinessLatest() {
     const rows = await pullView("v_adaptive_readiness_latest", {
       order: "readiness_score.desc.nullslast",
@@ -382,6 +450,9 @@
     pullV2PortfolioStatistics,
     pullV2RollingStatistics,
     pullV2PerformanceBundle,
+    pullAmdStructureLatest,
+    renderAmdStructure,
+    refreshAmdStructureMonitor,
     pullAdaptiveReadinessLatest,
     pullAdaptiveReadinessSummary,
     pullAdaptiveReadinessScoreBands,
@@ -390,4 +461,15 @@
     submitStdBrowserSnapshot,
     pullStdParitySummary
   };
+  if (typeof document !== "undefined") {
+    const startAmdMonitor = () => {
+      refreshAmdStructureMonitor();
+      global.setInterval(refreshAmdStructureMonitor, 60000);
+    };
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", startAmdMonitor, { once: true });
+    } else {
+      startAmdMonitor();
+    }
+  }
 })(globalThis);
