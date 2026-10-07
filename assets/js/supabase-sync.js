@@ -202,6 +202,58 @@
     ]);
     return {strategyVersion,strategies,portfolio:portfolio?.[0]||null,rolling10,rolling20};
   }
+  async function pullView(viewName, options = {}) {
+    const params = new URLSearchParams({ select: options.select || "*" });
+    if (options.order) params.set("order", options.order);
+    if (options.limit) params.set("limit", String(Math.min(1000, Math.max(1, Number(options.limit) || 100))));
+    return await request(`/rest/v1/${viewName}?${params.toString()}`, { method: "GET" });
+  }
+
+  async function pullAdaptiveReadinessLatest() {
+    const rows = await pullView("v_adaptive_readiness_latest", {
+      order: "readiness_score.desc.nullslast",
+      limit: 20
+    });
+    return Array.isArray(rows) ? rows : [];
+  }
+
+  async function pullAdaptiveReadinessSummary() {
+    const rows = await pullView("v_adaptive_readiness_summary", { limit: 1 });
+    return Array.isArray(rows) ? rows[0] || null : rows || null;
+  }
+
+  async function pullAdaptiveReadinessScoreBands() {
+    const rows = await pullView("v_adaptive_readiness_score_bands", {
+      order: "strategy.asc,score_band_order.asc",
+      limit: 100
+    });
+    return Array.isArray(rows) ? rows : [];
+  }
+
+  async function pullAdaptiveReadinessByRegime() {
+    const rows = await pullView("v_adaptive_readiness_by_regime", {
+      order: "strategy.asc,market_regime.asc",
+      limit: 100
+    });
+    return Array.isArray(rows) ? rows : [];
+  }
+
+  async function pullAdaptiveForwardOrders(options = {}) {
+    const limit = Math.min(100, Math.max(1, Number(options.limit) || 20));
+    const params = new URLSearchParams({
+      select: "*",
+      order: "opened_at.desc",
+      limit: String(limit)
+    });
+    const clean = value => String(value || "").trim().replace(/[^A-Z0-9_:-]/gi, "");
+    const status = clean(options.status);
+    const strategy = clean(options.strategyCode);
+    if (status && status !== "ALL") params.set("status", status === "CLOSED" ? "neq.OPEN" : `eq.${status}`);
+    if (strategy && strategy !== "ALL") params.set("strategy_code", `eq.${strategy}`);
+    const rows = await request(`/rest/v1/v_adaptive_forward_orders?${params.toString()}`, { method: "GET" });
+    return Array.isArray(rows) ? rows : [];
+  }
+
   async function pullRemote() {
     const columns = [
       "signal_key", "local_trade_id", "profile_code", "profile_version", "logic",
@@ -318,5 +370,24 @@
     }
   }
 
-  global.TradeLabSupabaseSync = { isConfigured, synchronize, pullRemote, pullMarketCandles, pullForwardStatistics, pullServerForwardTrades, pullProfileAccountModelStatistics300, pullV2ExpectancyStatistics, pullV2PortfolioStatistics, pullV2RollingStatistics, pullV2PerformanceBundle, submitStdBrowserSnapshot, pullStdParitySummary };
+  global.TradeLabSupabaseSync = {
+    isConfigured,
+    synchronize,
+    pullRemote,
+    pullMarketCandles,
+    pullForwardStatistics,
+    pullServerForwardTrades,
+    pullProfileAccountModelStatistics300,
+    pullV2ExpectancyStatistics,
+    pullV2PortfolioStatistics,
+    pullV2RollingStatistics,
+    pullV2PerformanceBundle,
+    pullAdaptiveReadinessLatest,
+    pullAdaptiveReadinessSummary,
+    pullAdaptiveReadinessScoreBands,
+    pullAdaptiveReadinessByRegime,
+    pullAdaptiveForwardOrders,
+    submitStdBrowserSnapshot,
+    pullStdParitySummary
+  };
 })(globalThis);
