@@ -218,7 +218,7 @@
     SEARCHING: 200
   };
   async function pullAmdStructureLatest() {
-    const rows = await pullView("v_amd_structure_latest", { limit: 20 });
+    const rows = await pullView("v_amd_structure_monitor_latest", { limit: 20 });
     const list = Array.isArray(rows) ? rows : rows ? [rows] : [];
     return list.sort((a, b) => {
       const phaseDifference = (AMD_PHASE_PRIORITY[b?.amd_phase] || 0) - (AMD_PHASE_PRIORITY[a?.amd_phase] || 0);
