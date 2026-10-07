@@ -209,17 +209,34 @@
     return await request(`/rest/v1/${viewName}?${params.toString()}`, { method: "GET" });
   }
 
+  const AMD_PHASE_PRIORITY = {
+    ENTRY_PENDING: 700,
+    DISTRIBUTION_CONFIRMED: 600,
+    RECLAIM_CONFIRMED: 500,
+    SWEEP_DETECTED: 400,
+    ACCUMULATION: 300,
+    SEARCHING: 200
+  };
   async function pullAmdStructureLatest() {
-    const rows = await pullView("v_amd_structure_latest", { limit: 1 });
-    return Array.isArray(rows) ? rows[0] || null : rows || null;
+    const rows = await pullView("v_amd_structure_latest", { limit: 20 });
+    const list = Array.isArray(rows) ? rows : rows ? [rows] : [];
+    return list.sort((a, b) => {
+      const phaseDifference = (AMD_PHASE_PRIORITY[b?.amd_phase] || 0) - (AMD_PHASE_PRIORITY[a?.amd_phase] || 0);
+      if (phaseDifference) return phaseDifference;
+      const readinessDifference = Number(b?.readiness_score || 0) - Number(a?.readiness_score || 0);
+      if (readinessDifference) return readinessDifference;
+      return Date.parse(b?.evaluated_at || 0) - Date.parse(a?.evaluated_at || 0);
+    })[0] || null;
+  }
+  function amdHasValue(value) {
+    return value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+  }
+  function amdNumber(value, digits = 2) {
+    return amdHasValue(value) ? Number(value).toFixed(digits) : "--";
   }
   function amdText(id, value, fallback = "--") {
     const node = document.getElementById(id);
     if (node) node.textContent = value === null || value === undefined || value === "" ? fallback : String(value);
-  }
-  function amdNumber(value, digits = 2) {
-    const number = Number(value);
-    return Number.isFinite(number) ? number.toFixed(digits) : "--";
   }
   function renderAmdStructure(row) {
     if (!row) {
@@ -231,13 +248,11 @@
     const details = row.amd_details || {};
     const h1 = details.h1Context || {};
     const entryPlan = details.entryPlan || {};
-    const distribution = details.distribution || {};
     const phase = row.amd_phase || "--";
     const direction = row.direction || "WAIT";
     const session = row.amd_session_model || "--";
-    const executionEnabled = details.forwardExecutionEnabled === true;
     amdText("amdStrategyStatus", `${phase} / ${direction}`);
-    amdText("amdExecutionStatus", executionEnabled ? "EXECUTION ENABLED" : "EXECUTION DISABLED");
+    amdText("amdExecutionStatus", details.forwardExecutionEnabled === true ? "EXECUTION ENABLED" : "EXECUTION DISABLED");
     amdText("amdPhase", phase);
     amdText("amdBlockReason", row.hard_block_reason || "AMD_SHADOW_BLOCKED");
     amdText("amdSessionDirection", `${session} / ${direction}`);
@@ -261,8 +276,6 @@
     const reclaim = row.reclaim_confirmed ? `RECLAIM ${amdNumber(row.reclaim_price)}` : "WAITING";
     amdText("amdSweepReclaim", `${sweep} / ${reclaim}`);
     amdText("amdSafetyGate", row.hard_gate_passed === true ? "PASSED" : "BLOCKED / SHADOW");
-    const monitor = document.getElementById("amdStructureMonitor");
-    if (monitor) monitor.dataset.amdPhase = phase;
     return true;
   }
   async function refreshAmdStructureMonitor() {
@@ -273,7 +286,6 @@
     } catch (error) {
       report("AMD_MONITOR_ERROR", { message: String(error?.message || error) });
       amdText("amdStrategyStatus", "SHADOW MODE / DATA ERROR");
-      amdText("amdBlockReason", String(error?.message || error));
       return { ok: false, reason: String(error?.message || error) };
     }
   }
@@ -466,10 +478,7 @@
       refreshAmdStructureMonitor();
       global.setInterval(refreshAmdStructureMonitor, 60000);
     };
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", startAmdMonitor, { once: true });
-    } else {
-      startAmdMonitor();
-    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", startAmdMonitor, { once: true });
+    else startAmdMonitor();
   }
 })(globalThis);
